@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nomor Surat Generator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        input {
+            padding: 8px;
+            margin-bottom: 5px;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        table {
+            width: 100%;
+            max-width: 600px;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        table, th, td {
+            border: 1px solid black;
+        }
+
+        th, td {
+            padding: 8px;
+            text-align: left;
+        }
+
+        .copy-button {
+            background-color: #007BFF;
+        }
+
+        .copy-button:hover {
+            background-color: #0056b3;
+        }
+
+        .example {
+            font-size: 0.9em;
+            color: #555;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Nomor Surat Generator</h1>
+
+    <label for="prefix">Prefix:</label>
+    <input type="text" id="prefix">
+    <div class="example">Contoh: LOG-</div>
+
+    <label for="startNumber">Nomor Awal:</label>
+    <input type="number" id="startNumber">
+    <div class="example">Contoh: 2</div>
+
+    <label for="count">Berapa Banyak Nomor Surat:</label>
+    <input type="number" id="count">
+    <div class="example">Contoh: 10</div>
+
+    <label for="postfix">Postfix:</label>
+    <input type="text" id="postfix">
+    <div class="example">Contoh: /JAULAHLDK/ALFATH-UNITEL/IX/2024</div>
+
+    <button onclick="generateTable()">Generate Nomor Surat</button>
+    <button class="copy-button" onclick="copyTable()">Copy Table</button>
+
+    <table id="resultTable">
+       
+        <tbody id="tableBody">
+            <!-- Hasil akan ditampilkan di sini -->
+        </tbody>
+    </table>
+
+    <script>
+        function generateTable() {
+            // Mengambil input dari user
+            const prefix = document.getElementById('prefix').value;
+            const startNumber = parseInt(document.getElementById('startNumber').value);
+            const count = parseInt(document.getElementById('count').value);
+            const postfix = document.getElementById('postfix').value;
+
+            // Mendapatkan elemen body dari tabel
+            const tableBody = document.getElementById('tableBody');
+            tableBody.innerHTML = ''; // Bersihkan hasil sebelumnya
+
+            // Perulangan untuk menghasilkan nomor surat
+            for (let i = 0; i < count; i++) {
+                const currentNumber = startNumber + i;
+                const formattedNumber = prefix + String(currentNumber).padStart(3, '0');
+
+                // Membuat baris baru untuk tabel
+                const row = document.createElement('tr');
+
+                // Menambahkan kolom untuk nomor surat
+                const numberCell = document.createElement('td');
+                numberCell.textContent = formattedNumber;
+                row.appendChild(numberCell);
+
+                // Menambahkan kolom untuk postfix
+                const postfixCell = document.createElement('td');
+                postfixCell.textContent = postfix;
+                row.appendChild(postfixCell);
+
+                // Memasukkan baris ke dalam tabel
+                tableBody.appendChild(row);
+            }
+        }
+
+        function copyTable() {
+            const table = document.getElementById('resultTable');
+            let range, selection;
+
+            if (document.createRange) {
+                range = document.createRange();  
+                range.selectNode(table);
+                selection = window.getSelection();
+                selection.removeAllRanges();
+                selection.addRange(range);
+            } else if (document.selection) {
+                range = document.body.createTextRange();
+                range.moveToElementText(table);
+                range.select();
+            }
+
+            try {
+                document.execCommand('copy');
+                alert('Tabel berhasil disalin!');
+            } catch (err) {
+                alert('Gagal menyalin tabel. Silakan salin secara manual.');
+            }
+
+            // Menghapus highlight pada tabel setelah menyalin
+            if (selection) {
+                selection.removeAllRanges();
+            }
+        }
+    </script>
+
+</body>
+</html>
+<!-- pembuatan kode mayoritas oleh chatGPT  -->
